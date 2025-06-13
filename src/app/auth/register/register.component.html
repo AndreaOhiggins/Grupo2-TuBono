@@ -1,0 +1,60 @@
+<div class="min-h-screen flex flex-col items-center justify-center">
+    <div class="h-screen grid md:grid-cols-2 w-full">
+
+        <!-- Image -->
+    <img src="https://img.freepik.com/fotos-premium/geld-als-lebensnerv-des-vernetzten-netzes-das-die-vertikale-mobile-wallpape-der-weltwirtschaft-darstellt_896558-13421.jpg"
+      alt="Login Background Image" class="hidden md:block object-cover w-full h-screen">
+
+        <div class="flex flex-col h-full bg-green-950">
+
+            <!---->
+            <div class="flex justify-end p-6">
+                <span
+                    class="bg-gradient-to-r from-lime-600 to-lime-900 bg-clip-text text-transparent text-2xl font-bold">TuBono</span>
+            </div>
+
+            <div class="flex flex-col justify-center items-center flex-1 p-12">
+                <form class="w-full max-w-md">
+                    <h3 class="text-white lg:text-3xl text-2xl font-bold mb-8 text-center">
+                        ¡Bienvenido!
+                    </h3>
+
+                    <div class="space-y-6">
+                        <div>
+                            <label class='text-sm text-gray-300 font-medium mb-2 block'>Usuario</label>
+                            <input name="username" type="username" required
+                                class="outline-0 rounded-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-lime-700 focus:border-lime-700 block flex-1 min-w-0 w-full text-sm p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-lime-700 dark:focus:border-lime-700"
+                                />
+                        </div>
+                        <div>
+                            <label class='text-sm text-gray-300 font-medium mb-2 block'>Email</label>
+                            <input name="email" type="email" required
+                                class="outline-0 rounded-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-lime-700 focus:border-lime-700 block flex-1 min-w-0 w-full text-sm p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-lime-700 dark:focus:border-lime-700"
+                                />
+                        </div>
+                        <div>
+                            <label class='text-sm text-gray-300 font-medium mb-2 block'>Password</label>
+                            <input name="password" type="password" required
+                                class="outline-0 rounded-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-lime-700 focus:border-lime-700 block flex-1 min-w-0 w-full text-sm p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-lime-700 dark:focus:border-lime-700"
+                                />
+                        </div>
+
+                    </div>
+
+                    <div class="!mt-12">
+                        <button type="button"
+                            class="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded-lg text-white bg-gradient-to-r from-lime-700 via-lime-800 to-lime-950 hover:from-lime-500 hover:via-lime-700 hover:to-lime-800 focus:outline-none cursor-pointer"
+                            (click)="gotoLogin()">
+                            Registrarse
+                        </button>
+                    </div>
+                    <p class="mt-10 text-center text-sm/6 font-extralight text-gray-300">
+                        ¿Ya tienes una cuenta?
+                        <a routerLink="/login"
+                            class="font-bold text-white hover:text-lime-600">Iniciar sesión</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
