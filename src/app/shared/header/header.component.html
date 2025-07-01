@@ -1,12 +1,12 @@
+<!-- HEADER -->
 <header class="antialiased">
   <nav class="bg-[#0A5C6B] px-6 py-4 shadow-md">
     <div class="flex justify-between items-center">
-      <!-- Lado izquierdo: Menú y logo -->
+      <!-- Botón hamburguesa + logo -->
       <div class="flex items-center gap-4">
-        <!-- Icono hamburguesa -->
         <button
+          (click)="toggleSidebar()"
           class="text-white hover:scale-110 transition-transform focus:outline-none"
-          id="menu-toggle"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
             viewBox="0 0 24 24">
@@ -15,11 +15,10 @@
           </svg>
         </button>
 
-        <!-- Logo -->
         <h1 class="text-white text-xl font-semibold">Tu Bono</h1>
       </div>
 
-      <!-- Lado derecho: nombre del usuario y avatar -->
+      <!-- Nombre e imagen de usuario -->
       <div class="flex items-center gap-3">
         <p class="text-white font-medium hidden sm:block">Juan Perez</p>
         <img
@@ -31,3 +30,23 @@
     </div>
   </nav>
 </header>
+
+<!-- SIDEBAR -->
+<div
+  class="fixed top-0 left-0 h-full w-64 bg-[#0A5C6B] text-white p-6 z-50 transition-transform duration-300"
+  [ngClass]="{ 'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen }"
+>
+  <h2 class="text-lg font-semibold mb-6">Menú</h2>
+  <ul class="space-y-4">
+    <li><a href="#" class="block hover:bg-[#0d7083] p-2 rounded">Inicio</a></li>
+    <li><a href="#" class="block hover:bg-[#0d7083] p-2 rounded">Perfil</a></li>
+    <li><a href="#" class="block hover:bg-[#0d7083] p-2 rounded">Cerrar Sesión</a></li>
+  </ul>
+</div>
+
+<!-- BACKDROP al hacer clic fuera del sidebar -->
+<div
+  class="fixed inset-0 bg-black bg-opacity-40 z-40"
+  *ngIf="sidebarOpen"
+  (click)="toggleSidebar()"
+></div>
