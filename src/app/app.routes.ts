@@ -4,6 +4,7 @@ import { RegisterComponent } from './auth/register/register.component';
 import { HomeComponent } from './bond/pages/home/home.component';
 import { BondFormComponent } from './bond/components/bond-form/bond-form.component';
 import { BondTableComponent } from './bond/components/bond-table/bond-table.component';
+import { ProfileComponent } from './profile/profile.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -15,5 +16,6 @@ export const routes: Routes = [
             {path:'bond-table', component: BondTableComponent},
             {path: 'bond-form', component: BondFormComponent}
         ]
-    }
+    },
+    {path: 'profile', component:ProfileComponent}
 ];

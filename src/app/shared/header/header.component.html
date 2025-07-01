@@ -38,15 +38,15 @@
 >
   <h2 class="text-lg font-semibold mb-6">Menú</h2>
   <ul class="space-y-4">
-    <li><a href="#" class="block hover:bg-[#0d7083] p-2 rounded">Inicio</a></li>
-    <li><a href="#" class="block hover:bg-[#0d7083] p-2 rounded">Perfil</a></li>
+    <li><a href=" " class="block hover:bg-[#0d7083] p-2 rounded">Inicio</a></li>
+    <li><a href="profile" class="block hover:bg-[#0d7083] p-2 rounded">Perfil</a></li>
     <li><a href="#" class="block hover:bg-[#0d7083] p-2 rounded">Cerrar Sesión</a></li>
   </ul>
 </div>
 
 <!-- BACKDROP al hacer clic fuera del sidebar -->
 <div
-  class="fixed inset-0 bg-black bg-opacity-40 z-40"
+  class="fixed inset-0 bg-opacity-40 z-40"
   *ngIf="sidebarOpen"
   (click)="toggleSidebar()"
 ></div>
