@@ -1,43 +1,57 @@
 <app-header></app-header>
 
-  <!-- Avatar Section -->
-  <div class="avatar-section">
-    <div class="avatar-container">
-      <div class="avatar">
-        <img src="assets/images/avatar-placeholder.png" alt="Fotito" class="avatar-image">
-      </div>
-    
+<!-- Avatar Section -->
+<div class="avatar-section">
+  <div class="avatar-container">
+    <div class="avatar">
+      <img src="assets/images/avatar-placeholder.png" alt="Fotito" class="avatar-image">
     </div>
-  </div>
 
-  <!-- Form Section -->
-  <div class="form-section">
+  </div>
+</div>
+
+<!-- Form Section -->
+<div class="form-section">
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="username" class="form-label">Nombre de usuario</label>
-      <input 
-        type="text" 
-        id="username" 
-        class="form-input" 
-        [(ngModel)]="usuario">
+      <input type="text" id="username" class="form-input" formControlName="username" required>
+      <div *ngIf="username.invalid && username.touched" class="text-sm text-red-500 mt-1">
+        El nombre de usuario es obligatorio.
+      </div>
     </div>
 
     <div class="form-group">
-      <label for="email" class="form-label">email</label>
-      <input 
-        type="email" 
-        id="email" 
-        class="form-input" 
-        [(ngModel)]="correo">
+      <label for="email" class="form-label">Correo electrónico</label>
+      <input type="email" id="email" class="form-input" formControlName="email" required>
+      <div *ngIf="email.invalid && email.touched" class="text-sm text-red-500 mt-1">
+        El correo electrónico es obligatorio.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="password" class="form-label">Contraseña</label>
+      <input type="password" id="password" class="form-input" formControlName="password" required />
+      <div *ngIf="password.invalid && password.touched" class="text-sm text-red-500 mt-1">
+        La contraseña es obligatoria.
+      </div>
     </div>
 
     <div class="form-group">
       <label for="language" class="form-label">Idioma</label>
-      <select 
-        id="language" 
-        class="form-select" 
-        [(ngModel)]="idioma">
-        <option value="Castellano">Español</option>
+      <select id="language" class="form-select" formControlName="language">
+        <option value="Español" selected>Español</option>
       </select>
     </div>
-  </div>
+    <div>
+      <button type="submit" [disabled]="profileForm.invalid"
+        class="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded-lg text-white bg-teal-500 hover:bg-teal-800 focus:outline-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+        Guardar Cambios
+      </button>
+    </div>
+  </form>
 
+  <div *ngIf="showSuccessMessage" class="mt-4 p-3 rounded bg-green-100 text-green-800 text-center shadow">
+    Cambios guardados correctamente.
+  </div>
+</div>
