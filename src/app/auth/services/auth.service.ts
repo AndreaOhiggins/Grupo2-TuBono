@@ -1,0 +1,62 @@
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Injectable, signal } from '@angular/core';
+import { Observable, catchError, retry, throwError } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService {
+
+  base_URL = "http://localhost:8080/api/v1";
+
+  constructor(private http: HttpClient) { }
+
+  private userIdSignal = signal<number | null>(null); 
+
+  // userIdSignal
+  getUserId() {
+    return this.userIdSignal();
+  }
+  setUserId(id: number) {
+    this.userIdSignal.set(id);
+    localStorage.setItem('userId', id.toString());
+  }
+  restoreSession() {
+    const stored = localStorage.getItem('userId');
+    if (stored) {
+      this.userIdSignal.set(Number(stored));
+    }
+  }
+  logout() {
+    this.userIdSignal.set(null);
+    localStorage.removeItem('userId');
+  }
+  userId = this.userIdSignal.asReadonly();
+
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  }
+
+  handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      console.log(`An error ocurred ${error.status}, body was: ${error.error}`);
+    } else {
+      console.log(`Backend returned code ${error.status}, body was: ${error.error}`);
+    }
+    return throwError(() => new Error('Something bad happened; please try again later.'));
+  }
+
+  registerUser(user: any): Observable<any> {
+    return this.http.post<any>(`${this.base_URL}/user/register`, JSON.stringify(user), this.httpOptions).pipe(retry(2),catchError(this.handleError));
+  }
+
+  loginUser(email: any, password: any): Observable<any> {
+    return this.http.post<any>(`${this.base_URL}/user/login?email=${email}&password=${password}`, this.httpOptions).pipe(
+      retry(2),
+      catchError(this.handleError)
+    );
+  }
+  
+}
