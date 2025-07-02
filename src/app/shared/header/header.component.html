@@ -1,27 +1,52 @@
+<!-- HEADER -->
 <header class="antialiased">
-  <nav class="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
-    <div class="flex flex-wrap justify-between items-center">
-      <div class="flex justify-start items-center">
-
-        <!-- <a href="https://flowbite.com" class="flex mr-4">
-          <img src="https://flowbite.s3.amazonaws.com/logo.svg" class="mr-3 h-8" alt="FlowBite Logo" />
-          <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
-        </a> -->
-
-      </div>
-      <div class="flex items-center lg:order-2">
-
-        <p class="text-white text-base">Juan Perez Rodriguez</p>
-
-        <button type="button"
-          class="flex mx-3 text-sm bg-gray-800 rounded-full md:mr-0 dark:focus:ring-gray-600 cursor-pointer hover:scale-110 transition-transform"
-          id="user-menu-button">
-          <span class="sr-only">Open user menu</span>
-          <img class="w-13 h-13 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-            alt="user photo">
+  <nav class="bg-[#0A5C6B] px-6 py-4 shadow-md">
+    <div class="flex justify-between items-center">
+      <!-- Botón hamburguesa + logo -->
+      <div class="flex items-center gap-4">
+        <button
+          (click)="toggleSidebar()"
+          class="text-white hover:scale-110 transition-transform focus:outline-none"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
         </button>
 
+        <h1 class="text-white text-xl font-semibold">Tu Bono</h1>
+      </div>
+
+      <!-- Nombre e imagen de usuario -->
+      <div class="flex items-center gap-3">
+        <p class="text-white font-medium hidden sm:block">Juan Perez</p>
+        <img
+          class="w-10 h-10 rounded-full border-2 border-white shadow-md"
+          src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+          alt="user photo"
+        />
       </div>
     </div>
   </nav>
 </header>
+
+<!-- SIDEBAR -->
+<div
+  class="fixed top-0 left-0 h-full w-64 bg-[#0A5C6B] text-white p-6 z-50 transition-transform duration-300"
+  [ngClass]="{ 'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen }"
+>
+  <h2 class="text-lg font-semibold mb-6">Menú</h2>
+  <ul class="space-y-4">
+    <li><a href=" " class="block hover:bg-[#0d7083] p-2 rounded">Inicio</a></li>
+    <li><a href="profile" class="block hover:bg-[#0d7083] p-2 rounded">Perfil</a></li>
+    <li><a href="#" class="block hover:bg-[#0d7083] p-2 rounded">Cerrar Sesión</a></li>
+  </ul>
+</div>
+
+<!-- BACKDROP al hacer clic fuera del sidebar -->
+<div
+  class="fixed inset-0 bg-opacity-40 z-40"
+  *ngIf="sidebarOpen"
+  (click)="toggleSidebar()"
+></div>
