@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../auth/services/auth.service';
+import { Router } from '@angular/router';
 // import {MatIconModule} from '@angular/material/icon';
 // import {MatButtonModule} from '@angular/material/button';
 // import {MatToolbarModule} from '@angular/material/toolbar';
@@ -16,6 +18,14 @@ import { CommonModule } from '@angular/common';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 
   sidebarOpen = false;
 
