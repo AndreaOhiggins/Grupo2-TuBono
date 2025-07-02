@@ -5,6 +5,7 @@ import { HomeComponent } from './bond/pages/home/home.component';
 import { BondFormComponent } from './bond/components/bond-form/bond-form.component';
 import { BondTableComponent } from './bond/components/bond-table/bond-table.component';
 import { ProfileComponent } from './profile/profile.component';
+import { BondDetailComponent } from './bond/components/bond-detail/bond-detail.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -14,7 +15,10 @@ export const routes: Routes = [
         children:[
             {path: '', redirectTo: 'bond-table', pathMatch: 'full'},
             {path:'bond-table', component: BondTableComponent},
-            {path: 'bond-form', component: BondFormComponent}
+            {path: 'bond-form', component: BondFormComponent},
+            {path: 'bond-form/edit/:bondId', component: BondFormComponent},
+            {path: 'bond-form/create', component: BondFormComponent},
+            {path: 'bond-detail/:bondId', component: BondDetailComponent}
         ]
     },
     {path: 'profile', component:ProfileComponent}
