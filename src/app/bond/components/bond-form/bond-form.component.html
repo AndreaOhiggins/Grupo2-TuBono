@@ -1,11 +1,129 @@
-<p>bond-form works!</p>
-<body class="bg-[#f5ecd5]">
-    <section>
-        <input type="text" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet">
+<div id="padre" class="flex items-center justify-center min-h-screen font-[Poppins] font-normal">
+    <form class="w-11/12 max-w-7xl mx-auto my-5 p-8 bg-white rounded-lg shadow-lg min-h-[80vh]">
+        <div class="flex flex-row justify-around">
+            <div class="basis-64">
+                <div class="mb-5">
+                    <label for="nombre" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Nombre del Bono</label>
+                    <input type="text" id="nombre" class="shadow-lg bg-white-50  text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                    required />
+                </div>
+                <div class="mb-5">
+                    <label for="tipoMoneda" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Tipo Moneda</label>
+                    <select id="tipoMoneda" class="shadow-lg bg-white-50 text-gray-900 text-sm rounded-lg block w-full p-2.5" required>
+                        <option value="">Seleccione una Moneda</option>
+                        <option value="Soles">Soles</option>
+                        <option value="Dólares">Dólares</option>
+                    </select>
+                </div>
+                <div class="mb-5">
+                    <label for="valorNominal" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Valor Nominal</label>
+                    <input type="number" id="valorNominal" class="shadow-lg bg-white-50  text-gray-900 text-sm rounded-lg block w-full p-2.5" required />
+                </div>
+                <div class="mb-5">
+                    <label for="valorComercial" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Valor Comercial</label>
+                    <input type="number" id="valorComercial" class="shadow-lg bg-white-50  text-gray-900 text-sm rounded-lg block w-full p-2.5" required />
+                </div>
+                <div class="mb-5 flex gap-4 items-end">
+                    <div class="w-1/2">
+                        <label for="tipoTasa" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Tipo de Tasa</label>
+                        <select id="tipoTasa" class="shadow-lg bg-white-50 text-gray-900 text-sm rounded-lg block w-full p-2.5" required onchange="document.getElementById('periodo').selectedIndex = 0; document.getElementById('capitalizacion').disabled = this.value !== 'Nominal'; if(this.value !== 'Nominal'){document.getElementById('capitalizacion').selectedIndex = 0;}">
+                            <option value="">Seleccione tipo</option>
+                            <option value="Efectiva">Efectiva</option>
+                            <option value="Nominal">Nominal</option>
+                        </select>
+                    </div>
+                    <div class="w-1/2">
+                        <label for="periodo"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Periodo</label>
+                        <select id="periodo" class="shadow-lg bg-white-50 text-gray-900 text-sm rounded-lg block w-full p-2.5" required>
+                            <option value="">Seleccione tipo</option>
+                            <option value="Anual">Anual</option>
+                            <option value="Semestral">Semestral</option>
+                            <option value="Cuatrimestral">Cuatrimestral</option>
+                            <option value="Trimestral">Trimestral</option>
+                            <option value="Bimestral">Bimestral</option>
+                            <option value="Mensual">Mensual</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-5 flex gap-4 items-end">
+                    <div class="relative w-1/2">
+                        <label for="tasaInteres" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Tasa Interes</label>
+                        <input type="number" id="tasaInteres" class="shadow-lg bg-white-50 text-gray-900 text-sm rounded-lg block w-full p-2.5" required />
+                        <span class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 h-25">%</span>
+                    </div>
+                    <div class="w-1/2">
+                        <label for="capitalizacion" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Capitalización</label>
+                        <select id="capitalizacion" class="shadow-lg bg-white-50 text-gray-900 text-sm rounded-lg block w-full p-2.5" required disabled>
+                            <option value="">Seleccione</option>
+                            <option value="Diaria">Diaria</option>
+                            <option value="Quincenal">Quincenal</option>
+                            <option value="Mensual">Mensual</option>
+                        </select>
+                    </div>
+                </div>
+                
 
-    </section>
+            </div>
+            <div class="basis-64">
+                <div class="mb-5">
+                    <label for="plazoPago" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Plazo de
+                        Pago</label>
+                    <input type="text" id="plazoPago"
+                        class="shadow-lg bg-white-50  text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                        required />
+                </div>
+                <div class="mb-5">
+                    <label for="frecuenciaPago"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Frecuencia de Pago</label>
+                    <select id="frecuenciaPago" class="shadow-lg bg-white-50 text-gray-900 text-sm rounded-lg block w-full p-2.5" required>
+                            <option value="">Seleccione tipo</option>
+                            <option value="Anual">Anual</option>
+                            <option value="Semestral">Semestral</option>
+                            <option value="Cuatrimestral">Cuatrimestral</option>
+                            <option value="Trimestral">Trimestral</option>
+                            <option value="Bimestral">Bimestral</option>
+                            <option value="Mensual">Mensual</option>
+                        </select>
+                </div>
+                 <div class="relative">
+                    <div class="mb-5">
+                        <label for="prima" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Prima</label>
+                        <input type="number" id="prima" class="shadow-lg bg-white-50  text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                        required />
+                        <span class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 h-25">%</span>
+                    </div>
+                </div>
+                <div class="flex gap-4 mb-5">
+                    <div class="relative w-1/2">
+                        <label for="estructuracion" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Estructuración</label>
+                        <input type="number" id="estructuracion" class="shadow-lg bg-white-50  text-gray-900 text-sm rounded-lg block w-full p-2.5" required />
+                        <span class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 h-25">%</span>
+                    </div>
+                    <div class="relative w-1/2">
+                        <label for="colocación" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Colocación</label>
+                        <input type="number" id="colocación" class="shadow-lg bg-white-50  text-gray-900 text-sm rounded-lg block w-full p-2.5" required />
+                        <span class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 h-25">%</span>
+                    </div>
+                </div>
+                <div class="flex gap-4 mb-5">
+                    <div class="relative w-1/2">
+                        <label for="flotacion" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Flotación</label>
+                        <input type="number" id="flotacion" class="shadow-lg bg-white-50  text-gray-900 text-sm rounded-lg block w-full p-2.5" required />
+                        <span class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 h-25">%</span>
+                    </div>
+                    <div class="relative w-1/2">
+                        <label for="cavali" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">CAVALI</label>
+                        <input type="number" id="cavali" class="shadow-lg bg-white-50  text-gray-900 text-sm rounded-lg block w-full p-2.5" required />
+                        <span class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 h-25">%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex justify-end mt-6">
+            <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Guardar</button>
+        </div>
+    </form>
 
-    <section>
-
-    </section>
-</body>
+</div>
