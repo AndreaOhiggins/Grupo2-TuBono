@@ -7,11 +7,32 @@ import { Observable, catchError, retry, throwError } from 'rxjs';
 })
 export class AuthService {
 
-  base_URL = "http://localhost:8080/api/v1";
+  base_URL = "https://3364-38-25-18-19.ngrok-free.app/api/v1";
 
   constructor(private http: HttpClient) { }
 
   private userIdSignal = signal<number | null>(null); 
+  private userDataSignal = signal<any>(null);
+
+  // userDataSignal
+  getUserData() {
+    return this.userDataSignal();
+  }
+  setUserData(data: any) {
+    this.userDataSignal.set(data);
+    localStorage.setItem('userData', JSON.stringify(data));
+  }
+  restoreUserData() {
+    const stored = localStorage.getItem('userData');
+    if (stored) {
+      this.userDataSignal.set(JSON.parse(stored));
+    }
+  }
+  clearUserData() {
+    this.userDataSignal.set(null);
+    localStorage.removeItem('userData');
+  }
+  userData = this.userDataSignal.asReadonly();
 
   // userIdSignal
   getUserId() {
@@ -35,7 +56,8 @@ export class AuthService {
 
   httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
     })
   }
 
@@ -49,11 +71,11 @@ export class AuthService {
   }
 
   registerUser(user: any): Observable<any> {
-    return this.http.post<any>(`${this.base_URL}/user/register`, JSON.stringify(user), this.httpOptions).pipe(retry(2),catchError(this.handleError));
+    return this.http.post<any>(`${this.base_URL}/users/register`, JSON.stringify(user), this.httpOptions).pipe(retry(2),catchError(this.handleError));
   }
 
   loginUser(email: any, password: any): Observable<any> {
-    return this.http.post<any>(`${this.base_URL}/user/login?email=${email}&password=${password}`, this.httpOptions).pipe(
+    return this.http.post<any>(`${this.base_URL}/users/login?email=${email}&password=${password}`, this.httpOptions).pipe(
       retry(2),
       catchError(this.handleError)
     );

@@ -7,24 +7,37 @@ import { Observable, catchError, retry, throwError } from 'rxjs';
 })
 export class BondService {
 
-  base_URL = "http://localhost:8080/api/v1";
+  base_URL = "https://3364-38-25-18-19.ngrok-free.app/api/v1";
 
   constructor(private http: HttpClient) { }
 
   httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
     })
   }
+  
+
+  // handleError(error: HttpErrorResponse) {
+  //   if (error.error instanceof ErrorEvent) {
+  //     console.log(`An error ocurred ${error.status}, body was: ${error.error}`);
+  //   } else {
+  //     console.log(`Backend returned code ${error.status}, body was: ${error.error}`);
+  //   }
+  //   return throwError(() => new Error('Something bad happened; please try again later.'));
+  // }
 
   handleError(error: HttpErrorResponse) {
-    if (error.error instanceof ErrorEvent) {
-      console.log(`An error ocurred ${error.status}, body was: ${error.error}`);
-    } else {
-      console.log(`Backend returned code ${error.status}, body was: ${error.error}`);
-    }
-    return throwError(() => new Error('Something bad happened; please try again later.'));
-  }
+  console.error('🔴 Error details:', {
+    url: error.url,
+    status: error.status,
+    statusText: error.statusText,
+    errorBody: error.error,
+    message: error.message
+  });
+  return throwError(() => new Error('Something bad happened; please try again later.'));
+}
 
   createBond(bond: any): Observable<any> {
     return this.http.post<any>(`${this.base_URL}/corporate-bond`, JSON.stringify(bond), this.httpOptions).pipe(
@@ -43,11 +56,13 @@ export class BondService {
 
   // /corporate-bonds/user/{userId}
   getBondsByUserId(userId: number): Observable<any> {
+    console.log(`Fetching bonds for user ID: ${userId}`);
     return this.http.get<any>(`${this.base_URL}/corporate-bonds/user/${userId}`, this.httpOptions).pipe(
       retry(2),
       catchError(this.handleError)
     );
   }
+
 
   // /corporate-bond/{id}
   updateBond(id: number, bond: any): Observable<any> {

@@ -46,6 +46,7 @@ export class LoginComponent {
       next: (response) => {
         console.log('Login successful:', response);
         this.authService.setUserId(response.id);
+        this.authService.setUserData(response);
         this.goToHome();
       }
       ,
