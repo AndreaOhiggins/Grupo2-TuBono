@@ -3,13 +3,14 @@ import { CommonModule, NgFor } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../auth/services/auth.service';
 import { BondService } from '../../services/bond.service';
-import { ProfileService } from '../../../profile/services/profile.service';
+import { AvailableOrAllBondsPipe } from './available-or-all-bonds.pipe';
 
 @Component({
   selector: 'app-bond-table',
   imports: [
     NgFor,
-    CommonModule
+    CommonModule,
+    AvailableOrAllBondsPipe
   ],
   templateUrl: './bond-table.component.html',
   styleUrl: './bond-table.component.css'
@@ -17,63 +18,42 @@ import { ProfileService } from '../../../profile/services/profile.service';
 export class BondTableComponent implements OnInit {
 
   private authService = inject(AuthService);
-  private profileService = inject(ProfileService)
   userId = computed(() => this.authService.userId());
   userData = this.authService.getUserData();
 
-  bonds = [
-    { name: 'Bond 1', issueDate: '01-01-2025', nominalValue: 1000, TCEA: 5.0, TREA: 4.5 },
-    { name: 'Bond 2', issueDate: '01-01-2025', nominalValue: 2000, TCEA: 6.0, TREA: 5.5 },
-    { name: 'Bond 3', issueDate: '01-01-2025', nominalValue: 1500, TCEA: 4.5, TREA: 4.0 }
-  ];
-
   displayedColumns: string[] = ['name', 'issueDate', 'nominalValue', 'TCEA', 'TREA'];
-  // dataSource = this.bonds;
-  dataSource: any[] = []; // Initialize as an empty array
+  dataSource: any[] = []; 
+
+  showSuccessModal = false;
 
   constructor(private router: Router, private bondService: BondService) {
     
   }
 
-  // ngOnInit(): void {
-  //   if (!this.authService.userId()) {
-  //     this.authService.restoreSession();
-  //   }
-  //   this.getUserById();
-  //   this.getAllBondsByUserId();
-  //   console.log('Llamando a getAllBondsByUserId()');
-  //   this.addCashFlowForEachBond();
-  // }
-
-  // ngOnInit(): void {
-  //   this.authService.restoreSession(); // <-- asegurar sesión al cargar
-  //   console.log("restore session " + this.userData);
-  //   this.getAllBondsByUserId();
-  // }
-
   ngOnInit(): void {
     this.authService.restoreSession();
-
     setTimeout(() => {
       const uid = this.authService.getUserId();
-      console.log('UserId restored:', uid);
+      const role = this.userData?.role;
       if (uid !== null && uid !== undefined) {
-        this.getAllBondsByUserId();
+        if (role === 'ISSUER') {
+          this.getAllBondsByUserId();
+        } else if (role === 'INVESTOR') {
+          this.getAllBonds();
+        }
       } else {
         console.error('No user ID found in session.');
       }
-    }, 100); // espera leve para asegurar que el localStorage haya sido leído
+    }, 100);
   }
 
+  // for issuers
   getAllBondsByUserId() {
-    console.log('User ID en Angular:', this.userId());
-
     const userId = this.userId();
     if (userId !== null && userId !== undefined) {
       this.bondService.getBondsByUserId(userId).subscribe({
         next: (response) => {
           this.dataSource = response;
-          console.log('Bonds fetched successfully:', this.dataSource);
 
           this.addCashFlowForEachBond();
         },
@@ -86,14 +66,24 @@ export class BondTableComponent implements OnInit {
     }
   }
 
+  // for investors
+  getAllBonds() {
+    this.bondService.getAllBonds().subscribe({
+      next: (response) => {
+        this.dataSource = response;
+        this.addCashFlowForEachBond();
+      },
+      error: (error) => {
+        console.error('Error fetching all bonds:', error);
+      }
+    });
+  }
+
   addCashFlowForEachBond() {
 
-    console.log('Adding cash flow for each bond...');
-
-    // para cada bono, agregar un flujo de caja
-    // Espera a que los bonos estén cargados antes de intentar agregar el flujo de caja
+    // for each bond, add a cash flow
     if (!this.dataSource || this.dataSource.length === 0) {
-      // Si los bonos aún no están cargados, espera un poco y vuelve a intentar
+      // if bonds are not loaded yet, wait a bit and try again
       setTimeout(() => this.addCashFlowForEachBond(), 300);
       return;
     }
@@ -101,7 +91,7 @@ export class BondTableComponent implements OnInit {
     this.dataSource.forEach(bond => {
       this.bondService.getCashFlowByBondId(bond.id).subscribe({
       next: (response) => {
-        bond.cashFlow = response.cashFlow || response; // Ajusta según la estructura de la respuesta
+        bond.cashFlow = response.cashFlow || response;
         console.log('Cash flow added for bond:', bond.id);
         console.log('Bond modified:', bond);
       },
@@ -123,6 +113,30 @@ export class BondTableComponent implements OnInit {
     });
   }
 
+  buyBond(bondId: number) {
+    console.log('Buying bond with ID:', bondId);
+    this.showSuccessModal = true;
+    var purchasedState = {
+      bondState: 'PURCHASED',
+      userInvestorId: this.userId()
+    };
+    // update investor who bought the bond
+    const investorId = this.userId();
+    if (investorId !== null && investorId !== undefined) {
+      this.bondService.updateBondStateAndInvertorId(bondId, purchasedState).subscribe({
+        next: (response) => {
+          console.log('Bond investor ID updated successfully:', response);
+          this.getAllBonds();
+
+        },
+        error: (error) => {
+          console.error('Error updating bond investor ID:', error);
+        }
+      });
+    }
+  }
+
+  // Navigation methods
   goToNewBond() {
     this.router.navigate(['/home/bond-form']);
   }
@@ -135,6 +149,11 @@ export class BondTableComponent implements OnInit {
     this.router.navigate(['/home/bond-detail', bondId]);
   }
 
+  closeSuccessModal() {
+    this.showSuccessModal = false;
+  }
+
+  // Pagination properties
   currentPage = 1;
   totalPages = 3; 
   previousPage() {

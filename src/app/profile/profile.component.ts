@@ -56,10 +56,10 @@ export class ProfileComponent implements OnInit {
     this.profileService.getUserById(this.userId()).subscribe({
       next: (response) => {
         this.profileData = response;
+
+        // set form values
         this.username.setValue(this.profileData.username);
-        console.log('Profile data:', this.profileData);
         this.email.setValue(this.profileData.email);
-        console.log('Profile fetched successfully:', response);
       },
       error: (error) => {
         console.error('Error fetching profile:', error);
@@ -74,7 +74,6 @@ export class ProfileComponent implements OnInit {
       console.warn('Formulario inválido. Corrige los errores antes de continuar.');
       return;
     }
-    console.log('Creating new user:', this.profileForm.value);
     this.editProfile();
     this.onReset();
   }
@@ -86,12 +85,10 @@ export class ProfileComponent implements OnInit {
       password: this.password.value,
       role: this.profileData.role
     }
-    console.log('Updating profile with data:', this.profileData);
     this.profileService.updateUser(this.userId(), this.profileData).subscribe({
       next: (response) => {
         this.showSuccessMessage = true;
-        this.getProfile(); // Refresh profile data after update
-        console.log('Profile updated successfully:', response);
+        this.getProfile(); 
         setTimeout(() => {
           this.showSuccessMessage = false;
         }, 1000);
@@ -103,33 +100,14 @@ export class ProfileComponent implements OnInit {
 
   }
 
-  // Reset form -> clear error messages
   onReset() {
-    // this.profileForm.reset();
-    // just reset password 
-    this.password.setValue(''); // Reset password field only
+    this.password.setValue('');
     Object.keys(this.profileForm.controls).forEach(key => {
       const control = this.profileForm.get(key);
       control?.markAsPristine();
       control?.markAsUntouched();
       control?.setErrors(null);
     });
-  }
-
-
-
-
-  usuario: string = 'juanrodriguez';
-  correo: string = 'juanrodrigues@gmail.com';
-  idioma: string = 'Español';
-
-
-  guardarCambios() {
-    // Aquí puedes agregar lógica para guardar los cambios
-    console.log('Usuario:', this.usuario);
-    console.log('Correo:', this.correo);
-    console.log('Idioma:', this.idioma);
-    alert('Cambios guardados correctamente');
   }
 
 }

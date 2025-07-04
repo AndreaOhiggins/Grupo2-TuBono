@@ -6,6 +6,7 @@ import { BondFormComponent } from './bond/components/bond-form/bond-form.compone
 import { BondTableComponent } from './bond/components/bond-table/bond-table.component';
 import { ProfileComponent } from './profile/profile.component';
 import { BondDetailComponent } from './bond/components/bond-detail/bond-detail.component';
+import { BondPurchasesComponent } from './bond/components/bond-purchases/bond-purchases.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -18,7 +19,8 @@ export const routes: Routes = [
             {path: 'bond-form', component: BondFormComponent},
             {path: 'bond-form/edit/:bondId', component: BondFormComponent},
             {path: 'bond-form/create', component: BondFormComponent},
-            {path: 'bond-detail/:bondId', component: BondDetailComponent}
+            {path: 'bond-detail/:bondId', component: BondDetailComponent},
+            {path: 'bond-purchases', component: BondPurchasesComponent}
         ]
     },
     {path: 'profile', component:ProfileComponent}

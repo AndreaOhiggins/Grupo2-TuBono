@@ -1,19 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../auth/services/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink, NavigationEnd } from '@angular/router';
 import { ProfileService } from '../../profile/services/profile.service';
-// import {MatIconModule} from '@angular/material/icon';
-// import {MatButtonModule} from '@angular/material/button';
-// import {MatToolbarModule} from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-header',
   imports: [
-    // MatToolbarModule, 
-    // MatButtonModule, 
-    // MatIconModule
      CommonModule,
+     RouterLink
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
@@ -27,8 +22,14 @@ export class HeaderComponent implements OnInit {
   userId = this.authService.getUserId();
   userData= this.authService.getUserData();
 
+  sidebarOpen = false;
+
   constructor() {
-    
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.sidebarOpen = false;
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -41,8 +42,6 @@ export class HeaderComponent implements OnInit {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
-
-  sidebarOpen = false;
 
    toggleSidebar() {
     this.sidebarOpen = !this.sidebarOpen;

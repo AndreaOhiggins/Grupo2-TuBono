@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { BondService } from '../../services/bond.service';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule, NgFor } from '@angular/common';
+import { AuthService } from '../../../auth/services/auth.service';
 
 @Component({
   selector: 'app-bond-detail',
@@ -18,6 +19,11 @@ export class BondDetailComponent implements OnInit {
   cashFlow: any;
   bondData: any;
   bondId: any;
+
+  private authService = inject(AuthService);
+  userId = this.authService.getUserId();
+  userData = this.authService.getUserData();
+  
   constructor(private route: ActivatedRoute, private bondService: BondService) {
     this.route.paramMap.subscribe(params => {
         this.bondId = params.get('bondId');
@@ -26,6 +32,8 @@ export class BondDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.authService.restoreSession();
+
     this.getBondById();
     this.getCashFlow();
   }

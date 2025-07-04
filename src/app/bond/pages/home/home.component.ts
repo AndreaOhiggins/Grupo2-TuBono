@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from '../../../shared/header/header.component';
 import { AuthService } from '../../../auth/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -12,13 +13,26 @@ import { AuthService } from '../../../auth/services/auth.service';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
-  private auth = inject(AuthService);
-  userId = this.auth.userId;
+  private authService = inject(AuthService);
+  userId = computed(() => this.authService.userId());
+  userData = this.authService.getUserData();
+  
+  constructor(private router: Router) {
+    
+  }
 
-  constructor() {
-    console.log('User ID from HomeComponent:', this.userId());
+  ngOnInit(): void {
+    this.authService.restoreSession();
+    console.log('User ID restored in HomeComponent:', this.userId());
+    // Redirección según el rol
+    const role = this.userData?.role;
+    if (role === 'INVESTOR') {
+      this.router.navigate(['home/bond-purchases']);
+    } else if (role === 'ISSUER') {
+      this.router.navigate(['home/bond-table']);
+    }
   }
 
 }

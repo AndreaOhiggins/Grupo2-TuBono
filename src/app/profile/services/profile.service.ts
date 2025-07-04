@@ -7,7 +7,8 @@ import { Observable, catchError, retry, throwError } from 'rxjs';
 })
 export class ProfileService {
 
-  base_URL = "https://3364-38-25-18-19.ngrok-free.app/api/v1";
+  // base_URL = "https://3364-38-25-18-19.ngrok-free.app/api/v1";
+  base_URL = "http://localhost:8080/api/v1";
 
   constructor(private http: HttpClient) { }
 

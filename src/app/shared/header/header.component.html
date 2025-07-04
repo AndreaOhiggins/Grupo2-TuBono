@@ -15,18 +15,16 @@
           </svg>
         </button>
 
-        <h1 class="text-white text-xl font-semibold">Tu Bono</h1>
+        <!--Logo-->
+        <div class="flex justify-start -m-6">
+            <img src="assets/logo.png" alt="Logo"
+                class="ml-2 max-w-40 h-auto max-h-50 object-contain">
+        </div>
       </div>
 
-      <!-- Nombre e imagen de usuario -->
+      <!-- Name and user icon -->
       <div class="flex items-center gap-3">
         <p class="text-white font-medium hidden sm:block">{{userData?.username}}</p>
-        <span class="w-10 h-10 flex items-center justify-center rounded-full border-2 border-white shadow-md bg-[#15788b]">
-          <svg class="w-10 h-10 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-            <path fill-rule="evenodd" d="M12 20a7.966 7.966 0 0 1-5.002-1.756l.002.001v-.683c0-1.794 1.492-3.25 3.333-3.25h3.334c1.84 0 3.333 1.456 3.333 3.25v.683A7.966 7.966 0 0 1 12 20ZM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10c0 5.5-4.44 9.963-9.932 10h-.138C6.438 21.962 2 17.5 2 12Zm10-5c-1.84 0-3.333 1.455-3.333 3.25S10.159 13.5 12 13.5c1.84 0 3.333-1.455 3.333-3.25S13.841 7 12 7Z" clip-rule="evenodd"/>
-          </svg>
-        </span>
-
         <svg class="w-10 h-10 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
             <path fill-rule="evenodd" d="M12 20a7.966 7.966 0 0 1-5.002-1.756l.002.001v-.683c0-1.794 1.492-3.25 3.333-3.25h3.334c1.84 0 3.333 1.456 3.333 3.25v.683A7.966 7.966 0 0 1 12 20ZM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10c0 5.5-4.44 9.963-9.932 10h-.138C6.438 21.962 2 17.5 2 12Zm10-5c-1.84 0-3.333 1.455-3.333 3.25S10.159 13.5 12 13.5c1.84 0 3.333-1.455 3.333-3.25S13.841 7 12 7Z" clip-rule="evenodd"/>
           </svg>
@@ -37,7 +35,7 @@
 
 <!-- SIDEBAR -->
 
-<!------------------Sidebar inversor---------------->
+<!------------------Sidebar investor---------------->
 <div
   *ngIf="userData?.role === 'INVESTOR'"
   class="fixed top-0 left-0 h-full w-64 bg-[#0A5C6B] text-white p-6 z-50 transition-transform duration-300"
@@ -45,14 +43,14 @@
 >
   <h2 class="text-lg font-semibold mb-6">Menú</h2>
   <ul class="space-y-4">
-    <li><a href="home/bond-table" class="block hover:bg-[#0d7083] p-2 rounded">Mis inversiones</a></li>
-    <li><a href="home/bond-table" class="block hover:bg-[#0d7083] p-2 rounded">Comprar bono</a></li>
-    <li><a href="profile" class="block hover:bg-[#0d7083] p-2 rounded">Perfil</a></li>
+    <li><a routerLink="/home/bond-purchases" routerLinkActive="bg-[#0d7083]" class="block hover:bg-[#0d7083] p-2 rounded">Mis inversiones</a></li>
+    <li><a routerLink="/home/bond-table" routerLinkActive="bg-[#0d7083]" class="block hover:bg-[#0d7083] p-2 rounded">Comprar bono</a></li>
+    <li><a routerLink="/profile" routerLinkActive="bg-[#0d7083]" class="block hover:bg-[#0d7083] p-2 rounded">Perfil</a></li>
     <li><a (click)="logout()" class="block hover:bg-[#0d7083] p-2 rounded">Cerrar Sesión</a></li>
   </ul>
 </div>
 
-<!------------------Sidebar emisor---------------->
+<!------------------Sidebar issuer---------------->
 <div
   *ngIf="userData?.role === 'ISSUER'"
   class="fixed top-0 left-0 h-full w-64 bg-[#0A5C6B] text-white p-6 z-50 transition-transform duration-300"
@@ -60,8 +58,8 @@
 >
   <h2 class="text-lg font-semibold mb-6">Menú</h2>
   <ul class="space-y-4">
-    <li><a href="home/bond-table" class="block hover:bg-[#0d7083] p-2 rounded">Inicio</a></li>
-    <li><a href="profile" class="block hover:bg-[#0d7083] p-2 rounded">Perfil</a></li>
+    <li><a routerLink="/home/bond-table" routerLinkActive="bg-[#0d7083]" class="block hover:bg-[#0d7083] p-2 rounded">Inicio</a></li>
+    <li><a routerLink="/profile" routerLinkActive="bg-[#0d7083]" class="block hover:bg-[#0d7083] p-2 rounded">Perfil</a></li>
     <li><a (click)="logout()" class="block hover:bg-[#0d7083] p-2 rounded">Cerrar Sesión</a></li>
   </ul>
 </div>

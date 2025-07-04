@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BondService } from '../../services/bond.service';
+import { AuthService } from '../../../auth/services/auth.service';
 
 @Component({
   selector: 'app-bond-form',
@@ -14,6 +15,10 @@ export class BondFormComponent implements OnInit {
   isEditMode: boolean = false;
   bondId: any;
   bondData: any;
+  private authService = inject(AuthService);
+  userId = this.authService.getUserId();
+  userData = this.authService.getUserData();
+  
   constructor(private route: ActivatedRoute, private bondService: BondService) {
 
     // Check if the route contains a bondId parameter to determine if it's in edit mode
@@ -31,6 +36,8 @@ export class BondFormComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.authService.restoreSession();
+
     // If in edit mode, fetch the bond data by ID
     if (this.isEditMode && this.bondId) {
       console.log('Fetching bond data for ID:', this.bondId);

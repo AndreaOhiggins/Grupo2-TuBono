@@ -7,7 +7,8 @@ import { Observable, catchError, retry, throwError } from 'rxjs';
 })
 export class AuthService {
 
-  base_URL = "https://3364-38-25-18-19.ngrok-free.app/api/v1";
+  // base_URL = "https://3364-38-25-18-19.ngrok-free.app/api/v1";
+  base_URL = "http://localhost:8080/api/v1";
 
   constructor(private http: HttpClient) { }
 
@@ -21,12 +22,6 @@ export class AuthService {
   setUserData(data: any) {
     this.userDataSignal.set(data);
     localStorage.setItem('userData', JSON.stringify(data));
-  }
-  restoreUserData() {
-    const stored = localStorage.getItem('userData');
-    if (stored) {
-      this.userDataSignal.set(JSON.parse(stored));
-    }
   }
   clearUserData() {
     this.userDataSignal.set(null);
@@ -42,16 +37,23 @@ export class AuthService {
     this.userIdSignal.set(id);
     localStorage.setItem('userId', id.toString());
   }
-  restoreSession() {
-    const stored = localStorage.getItem('userId');
-    if (stored) {
-      this.userIdSignal.set(Number(stored));
-    }
-  }
   logout() {
     this.userIdSignal.set(null);
     localStorage.removeItem('userId');
   }
+  restoreSession() {
+  const storedId = localStorage.getItem('userId');
+  const storedData = localStorage.getItem('userData');
+
+  if (storedId) {
+    this.userIdSignal.set(Number(storedId));
+  }
+
+  if (storedData) {
+    this.userDataSignal.set(JSON.parse(storedData));
+  }
+}
+
   userId = this.userIdSignal.asReadonly();
 
   httpOptions = {
