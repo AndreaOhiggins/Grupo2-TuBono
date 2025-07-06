@@ -1,46 +1,54 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet">
 <div class="min-h-screen font-[Poppins] font-normal bg-white">
-    <div class="pt-10 pl-10 ml-35 flex items-center gap-4">
+    <div class="pt-8 px-4 flex items-center gap-4 md:gap-6">
         <a href="/home" class="group flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-200 transition-colors" title="Volver al inicio">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-7 h-7 text-gray-700 group-hover:text-blue-700">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
             </svg>
         </a>
-        <h1 class="text-3xl font-bold text-gray-900">Registrar Bono</h1>
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 text-center md:text-left w-full">
+          <ng-container *ngIf="isEditMode; else registrar">
+            Editar Bono
+          </ng-container>
+          <ng-template #registrar>Registrar Bono</ng-template>
+        </h1>
     </div>
     <div id="padre" class="flex items-center justify-center min-h-[80vh]">
         <form class="w-11/12 max-w-7xl mx-auto my-5 p-8 bg-white rounded-lg shadow-lg min-h-[80vh]">
-        <div class="flex flex-row justify-around">
-            <div class="basis-64">
+          <div class="flex flex-col md:flex-row md:gap-8">
+            <div class="w-full md:w-1/2">
                 <div class="mb-5">
                     <label for="nombre" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Nombre del Bono</label>
-                    <input type="text" id="nombre" class="shadow-lg bg-white-50  text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                    <input type="text" id="nombre" placeholder="Ej: Bono Corporativo 2025"
+                    class="shadow-lg bg-white-50  text-gray-900 text-sm rounded-lg block w-full p-2.5 placeholder:text-gray-400"
                     required />
                 </div>
                 <div class="mb-5">
                     <label for="tipoMoneda" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Tipo Moneda</label>
                     <select id="tipoMoneda" class="shadow-lg bg-white-50 text-gray-900 text-sm rounded-lg block w-full p-2.5" required>
                         <option value="">Seleccione una Moneda</option>
-                        <option value="Soles">Soles</option>
-                        <option value="Dólares">Dólares</option>
+                        <option value="SOLES">Soles</option>
+                        <option value="DOLLARS">Dólares</option>
                     </select>
                 </div>
                 <div class="mb-5">
                     <label for="valorNominal" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Valor Nominal</label>
-                    <input type="number" id="valorNominal" class="shadow-lg bg-white-50  text-gray-900 text-sm rounded-lg block w-full p-2.5" required />
+                    <input type="number" id="valorNominal" placeholder="Ej: 1000"
+                    class="shadow-lg bg-white-50  text-gray-900 text-sm rounded-lg block w-full p-2.5 placeholder:text-gray-400" required />
                 </div>
                 <div class="mb-5">
                     <label for="valorComercial" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Valor Comercial</label>
-                    <input type="number" id="valorComercial" class="shadow-lg bg-white-50  text-gray-900 text-sm rounded-lg block w-full p-2.5" required />
+                    <input type="number" id="valorComercial" placeholder="Ej: 900"
+                    class="shadow-lg bg-white-50  text-gray-900 text-sm rounded-lg block w-full p-2.5 placeholder:text-gray-400" required />
                 </div>
                 
                 <div class="mb-5 flex gap-4 items-end">
                     <div class="w-1/2">
                         <label for="tipoTasa" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Tipo de Tasa</label>
-                        <select id="tipoTasa" class="shadow-lg bg-white-50 text-gray-900 text-sm rounded-lg block w-full p-2.5" required onchange="document.getElementById('periodo').selectedIndex = 0; document.getElementById('capitalizacion').disabled = this.value !== 'Nominal'; if(this.value !== 'Nominal'){document.getElementById('capitalizacion').selectedIndex = 0;}">
+                        <select id="tipoTasa" class="shadow-lg bg-white-50 text-gray-900 text-sm rounded-lg block w-full p-2.5" required [(ngModel)]="tipoTasaValue" name="tipoTasa" (ngModelChange)="onTipoTasaChange()">
                             <option value="">Seleccione tipo</option>
-                            <option value="Efectiva">Efectiva</option>
-                            <option value="Nominal">Nominal</option>
+                            <option value="EFFECTIVE">Efectiva</option>
+                            <option value="NOMINAL">Nominal</option>
                         </select>
                     </div>
                     <div class="w-1/2">
@@ -48,40 +56,63 @@
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Periodo</label>
                         <select id="periodo" class="shadow-lg bg-white-50 text-gray-900 text-sm rounded-lg block w-full p-2.5" required>
                             <option value="">Seleccione tipo</option>
-                            <option value="Anual">Anual</option>
-                            <option value="Semestral">Semestral</option>
-                            <option value="Cuatrimestral">Cuatrimestral</option>
-                            <option value="Trimestral">Trimestral</option>
-                            <option value="Bimestral">Bimestral</option>
-                            <option value="Mensual">Mensual</option>
+                            <option value="360">Anual</option>
+                            <option value="180">Semestral</option>
+                            <option value="120">Cuatrimestral</option>
+                            <option value="180">Semestral</option>
+                            <option value="360">Anual</option>
                         </select>
                     </div>
                 </div>
                 <div class="mb-5 flex gap-4 items-end">
                     <div class="relative w-1/2">
                         <label for="tasaInteres" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Tasa Interes</label>
-                        <input type="number" id="tasaInteres" class="shadow-lg bg-white-50 text-gray-900 text-sm rounded-lg block w-full p-2.5" required />
+                        <input type="number" id="tasaInteres" step="0.01" placeholder="Ej: 5.5"
+                        class="shadow-lg bg-white-50 text-gray-900 text-sm rounded-lg block w-full p-2.5 placeholder:text-gray-400" required />
                         <span class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 h-25">%</span>
                     </div>
-                    <div class="w-1/2">
+                    <div class="w-1/2" *ngIf="tipoTasaValue === 'NOMINAL'">
                         <label for="capitalizacion" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Capitalización</label>
-                        <select id="capitalizacion" class="shadow-lg bg-white-50 text-gray-900 text-sm rounded-lg block w-full p-2.5" required disabled>
+                        <select id="capitalizacion" class="shadow-lg bg-white-50 text-gray-900 text-sm rounded-lg block w-full p-2.5" required [(ngModel)]="capitalizacionValue" name="capitalizacion">
                             <option value="">Seleccione</option>
-                            <option value="Diaria">Diaria</option>
-                            <option value="Quincenal">Quincenal</option>
-                            <option value="Mensual">Mensual</option>
+                            <option value="1">Diaria</option>
+                            <option value="15">Quincenal</option>
+                            <option value="30">Mensual</option>
+                            <option value="60">Bimestral</option>
+                            <option value="90">Trimestral</option>
+                            <option value="120">Cuatrimestral</option>
+                            <option value="180">Semestral</option>
+                            <option value="360">Anual</option>
                         </select>
                     </div>
                 </div>
-                
-
+                <div class="mb-5 flex gap-4 items-end">
+                    <div class="relative w-1/2">
+                        <label for="cok" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">COK</label>
+                        <input type="number" id="cok" step="0.01" placeholder="Ej: 5.5"
+                        class="shadow-lg bg-white-50 text-gray-900 text-sm rounded-lg block w-full p-2.5 placeholder:text-gray-400" required />
+                        <span class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 h-25">%</span>
+                    </div>
+                    <div class="w-1/2">
+                        <label for="cokFrecuencia" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Frecuencia COK</label>
+                        <select id="cokFrecuencia" class="shadow-lg bg-white-50 text-gray-900 text-sm rounded-lg block w-full p-2.5" required>
+                            <option value="">Seleccione</option>
+                            <option value="360">Anual</option>
+                            <option value="180">Semestral</option>
+                            <option value="120">Cuatrimestral</option>
+                            <option value="90">Trimestral</option>
+                            <option value="60">Bimestral</option>
+                            <option value="30">Mensual</option>
+                        </select>
+                    </div>
+                </div>
             </div>
-            <div class="basis-64">
+            <div class="w-full md:w-1/2">
                 <div class="mb-5">
                     <label for="plazoPago" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Plazo de
                         Pago</label>
-                    <input type="text" id="plazoPago"
-                        class="shadow-lg bg-white-50  text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                    <input type="number" id="plazoPago" placeholder="Ej: 3 (años)"
+                        class="shadow-lg bg-white-50  text-gray-900 text-sm rounded-lg block w-full p-2.5 placeholder:text-gray-400"
                         required />
                 </div>
                 <div class="mb-5">
@@ -89,18 +120,26 @@
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Frecuencia de Pago</label>
                     <select id="frecuenciaPago" class="shadow-lg bg-white-50 text-gray-900 text-sm rounded-lg block w-full p-2.5" required>
                             <option value="">Seleccione tipo</option>
-                            <option value="Anual">Anual</option>
-                            <option value="Semestral">Semestral</option>
-                            <option value="Cuatrimestral">Cuatrimestral</option>
-                            <option value="Trimestral">Trimestral</option>
-                            <option value="Bimestral">Bimestral</option>
-                            <option value="Mensual">Mensual</option>
+                            <option value="360">Anual</option>
+                            <option value="180">Semestral</option>
+                            <option value="120">Cuatrimestral</option>
+                            <option value="90">Trimestral</option>
+                            <option value="60">Bimestral</option>
+                            <option value="30">Mensual</option>
                         </select>
+                </div>
+                <div class="mb-5">
+                    <label for="tipoPeriodoGracia" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Tipo de periodo de gracia</label>
+                    <select id="tipoPeriodoGracia" name="tipoPeriodoGracia" class="shadow-lg bg-white-50 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+                        <option value="">Seleccione tipo</option>
+                        <option value="TOTAL">Total</option>
+                        <option value="PARTIAL">Parcial</option>
+                    </select>
                 </div>
                 <div class="mb-5">
                     <label for="periodoGracia" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Periodo de gracia</label>
                     <select id="periodoGracia" name="periodoGracia" class="shadow-lg bg-white-50 text-gray-900 text-sm rounded-lg block w-full p-2.5">
-                        <option value="">Sin periodo de gracia</option>
+                        <option value="0">Sin periodo de gracia</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -116,7 +155,8 @@
                  <div class="relative">
                     <div class="mb-5">
                         <label for="prima" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Prima</label>
-                        <input type="number" id="prima" class="shadow-lg bg-white-50  text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                        <input type="number" id="prima" step="0.01" placeholder="Ej: 1.0"
+                        class="shadow-lg bg-white-50  text-gray-900 text-sm rounded-lg block w-full p-2.5 placeholder:text-gray-400"
                         required />
                         <span class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 h-25">%</span>
                     </div>
@@ -124,32 +164,47 @@
                 <div class="flex gap-4 mb-5">
                     <div class="relative w-1/2">
                         <label for="estructuracion" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Estructuración</label>
-                        <input type="number" id="estructuracion" class="shadow-lg bg-white-50  text-gray-900 text-sm rounded-lg block w-full p-2.5" required />
+                        <input type="number" id="estructuracion" step="0.01" placeholder="Ej: 0.55"
+                        class="shadow-lg bg-white-50  text-gray-900 text-sm rounded-lg block w-full p-2.5 placeholder:text-gray-400" required />
                         <span class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 h-25">%</span>
                     </div>
                     <div class="relative w-1/2">
                         <label for="colocación" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Colocación</label>
-                        <input type="number" id="colocación" class="shadow-lg bg-white-50  text-gray-900 text-sm rounded-lg block w-full p-2.5" required />
+                        <input type="number" id="colocación" step="0.01" placeholder="Ej: 0.25"
+                        class="shadow-lg bg-white-50  text-gray-900 text-sm rounded-lg block w-full p-2.5 placeholder:text-gray-400" required />
                         <span class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 h-25">%</span>
                     </div>
                 </div>
                 <div class="flex gap-4 mb-5">
                     <div class="relative w-1/2">
                         <label for="flotacion" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Flotación</label>
-                        <input type="number" id="flotacion" class="shadow-lg bg-white-50  text-gray-900 text-sm rounded-lg block w-full p-2.5" required />
+                        <input type="number" id="flotacion" step="0.01" 
+                        class="shadow-lg bg-white-50  text-gray-900 text-sm rounded-lg block w-full p-2.5 placeholder:text-gray-400" required />
                         <span class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 h-25">%</span>
                     </div>
                     <div class="relative w-1/2">
                         <label for="cavali" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">CAVALI</label>
-                        <input type="number" id="cavali" class="shadow-lg bg-white-50  text-gray-900 text-sm rounded-lg block w-full p-2.5" required />
+                        <input type="number" id="cavali" step="0.01" placeholder="Ej: 0.10"
+                        class="shadow-lg bg-white-50  text-gray-900 text-sm rounded-lg block w-full p-2.5 placeholder:text-gray-400" required />
                         <span class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 h-25">%</span>
                     </div>
                 </div>
             </div>
-        </div>
+          </div>
         <div class="flex justify-end mt-6 mr-40">
-            <button type="submit" class="text-white bg-teal-500 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Guardar Bono</button>
+            <button type="submit"
+      class="text-white bg-teal-500 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
+      (click)="isEditMode ? update() : create()">
+      {{ isEditMode ? 'Guardar Cambios' : 'Guardar Bono' }}
+    </button>
         </div>
     </form>
+
+    <div *ngIf="showToast" class="flex items-center gap-4 fixed top-4 left-1/2 transform -translate-x-1/2 md:left-auto md:right-8 md:top-24 md:translate-x-0 bg-teal-500/80 text-white px-6 py-3 rounded-lg shadow-lg text-lg font-medium z-[9999] w-11/12 max-w-md mx-auto text-center md:text-right transition-opacity duration-300">
+      <svg class="size-9 text-white flex-shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm13.707-1.293a1 1 0 0 0-1.414-1.414L11 12.586l-1.793-1.793a1 1 0 0 0-1.414 1.414l2.5 2.5a1 1 0 0 0 1.414 0l4-4Z" clip-rule="evenodd"/>
+      </svg>
+      <p class="text-center m-0">{{ isEditMode ? 'Cambios guardados' : '¡Bono creado con éxito!' }}</p>  
+    </div>
 
 </div>

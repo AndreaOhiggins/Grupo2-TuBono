@@ -92,8 +92,6 @@ export class BondTableComponent implements OnInit {
       this.bondService.getCashFlowByBondId(bond.id).subscribe({
       next: (response) => {
         bond.cashFlow = response.cashFlow || response;
-        console.log('Cash flow added for bond:', bond.id);
-        console.log('Bond modified:', bond);
       },
       error: (error) => {
         console.error('Error fetching cash flows for bond:', error);

@@ -20,22 +20,29 @@ export class BondService {
   }
   
 
+  // handleError(error: HttpErrorResponse) {
+  //   if (error.error instanceof ErrorEvent) {
+  //     console.log(`An error ocurred ${error.status}, body was: ${error.error}`);
+  //   } else {
+  //     console.log(`Backend returned code ${error.status}, body was: ${error.error}`);
+  //   }
+  //   return throwError(() => new Error('Something bad happened; please try again later.'));
+  // }
+
   handleError(error: HttpErrorResponse) {
-    if (error.error instanceof ErrorEvent) {
-      console.log(`An error ocurred ${error.status}, body was: ${error.error}`);
-    } else {
-      console.log(`Backend returned code ${error.status}, body was: ${error.error}`);
-    }
-    return throwError(() => new Error('Something bad happened; please try again later.'));
+    console.error('Full error object:', error);
+    alert('Error del servidor: ' + JSON.stringify(error.error));
+    return throwError(() => new Error('Ocurrió un error. Inténtalo nuevamente.'));
   }
 
 
-  createBond(bond: any): Observable<any> {
-    return this.http.post<any>(`${this.base_URL}/corporate-bond`, JSON.stringify(bond), this.httpOptions).pipe(
+  createBond(userId: number, bond: any): Observable<any> {
+    return this.http.post<any>(`${this.base_URL}/corporate-bond?userId=${userId}`, JSON.stringify(bond), this.httpOptions).pipe(
       retry(2),
       catchError(this.handleError)
     );
   }
+
 
   getBondById(id: number): Observable<any> {
     return this.http.get<any>(`${this.base_URL}/corporate-bond/${id}`, this.httpOptions).pipe(
