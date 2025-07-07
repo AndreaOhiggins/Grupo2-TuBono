@@ -22,7 +22,7 @@
                 <br>
                 <strong>TREA:</strong> {{cashFlow?.trea | number:'1.2-2'}}% <br><br>
                 <strong>Duración:</strong> {{cashFlow?.duration | number:'1.2-2'}} años <br><br>
-                <strong>Duración modificada:</strong> {{cashFlow?.modifiedDuration | number:'1.2-2'}} años <br><br>
+                <strong>Duración modificada:</strong> {{cashFlow?.modifiedDuration | number:'1.2-2'}} % <br><br>
                 <strong>Convexidad:</strong> {{cashFlow?.convexity | number:'1.2-2'}} <br><br>
             </p>
         </div>
@@ -113,7 +113,9 @@
                         <td class="table-td">{{details.amortization | number:'1.2-2'}}</td>
                         <td class="table-td">{{details.payment | number:'1.2-2'}}</td>
                         <td class="table-td">{{details.balance | number:'1.2-2'}}</td>
-                        <td class="table-td">{{details.flow | number:'1.2-2'}}</td>
+                        <td class="table-td">
+                            {{ userData?.role === 'INVESTOR' ? (details?.invFlow | number:'1.2-2') : (details?.issFlow | number:'1.2-2') }}
+                        </td>
                     </tr>
                 </tbody>
             </table>

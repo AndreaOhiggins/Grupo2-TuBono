@@ -20,19 +20,13 @@ export class BondService {
   }
   
 
-  // handleError(error: HttpErrorResponse) {
-  //   if (error.error instanceof ErrorEvent) {
-  //     console.log(`An error ocurred ${error.status}, body was: ${error.error}`);
-  //   } else {
-  //     console.log(`Backend returned code ${error.status}, body was: ${error.error}`);
-  //   }
-  //   return throwError(() => new Error('Something bad happened; please try again later.'));
-  // }
-
   handleError(error: HttpErrorResponse) {
-    console.error('Full error object:', error);
-    alert('Error del servidor: ' + JSON.stringify(error.error));
-    return throwError(() => new Error('Ocurrió un error. Inténtalo nuevamente.'));
+    if (error.error instanceof ErrorEvent) {
+      console.log(`An error ocurred ${error.status}, body was: ${error.error}`);
+    } else {
+      console.log(`Backend returned code ${error.status}, body was: ${error.error}`);
+    }
+    return throwError(() => new Error('Something bad happened; please try again later.'));
   }
 
 
